@@ -2856,28 +2856,32 @@
               title: 'บันทึกข้อมูล',
               desc: allRecords.length > 0 ? '✅ เสร็จเรียบร้อย' : 'รอการกรอกฟอร์ม',
               active: allRecords.length > 0 && !isVerified,
-              completed: isVerified
+              completed: isVerified,
+              editAction: 'showPage(\'form\')'
             },
             {
               icon: '🔍',
               title: 'การตรวจสอบ',
               desc: isVerified ? `ตรวจสอบโดย: ${approvalData.verifierName}` : 'รอการตรวจสอบ',
               active: isVerified && !isDecided,
-              completed: isDecided
+              completed: isDecided,
+              editAction: 'showPage(\'approval\')'
             },
             {
               icon: '🎯',
               title: 'การพิจารณา',
               desc: isDecided ? `พิจารณาโดย: ${approvalData.decisionMakerName}` : 'รอการพิจารณา',
               active: isDecided && !isApproved,
-              completed: isApproved
+              completed: isApproved,
+              editAction: 'showPage(\'approval\')'
             },
             {
               icon: '✅',
               title: 'การอนุมัติ',
               desc: isApproved ? `ผู้อนุมัติ: ${approvalData.approverName}` : 'รอการอนุมัติ',
               active: isApproved && approvalData.decision === 'pending',
-              completed: isApproved && approvalData.decision === 'approved'
+              completed: isApproved && approvalData.decision === 'approved',
+              editAction: 'showPage(\'approval\')'
             }
           ];
           
@@ -2893,11 +2897,19 @@
             let titleColor = item.completed ? 'text-green-800' : 'text-gray-800';
             let descColor = item.completed ? 'text-green-600' : 'text-gray-600';
             
+            let editBtnHtml = '';
+            if (item.completed || item.active) {
+                editBtnHtml = `<button onclick="${item.editAction}" class="text-xs text-blue-500 hover:text-blue-700 underline mt-1">✏️ แก้ไข</button>`;
+            }
+
             timelineItem.innerHTML = `
 <div class="timeline-dot"></div>
-<div>
-<p class="font-semibold ${titleColor}">${item.icon} ${item.title}</p>
-<p class="text-sm ${descColor}">${item.desc}</p>
+<div class="flex-1 flex justify-between items-start">
+  <div>
+    <p class="font-semibold ${titleColor}">${item.icon} ${item.title}</p>
+    <p class="text-sm ${descColor}">${item.desc}</p>
+    ${editBtnHtml}
+  </div>
 </div>
 `;
             timelineContainer.appendChild(timelineItem);
@@ -2978,28 +2990,32 @@ ${isApproved ? `<p><span class="font-medium">ผู้อนุมัติ:</sp
               title: 'บันทึกข้อมูล',
               desc: '✅ เสร็จเรียบร้อย',
               active: true,
-              completed: false
+              completed: false,
+              editAction: 'showPage(\'form\')'
             },
             {
               icon: '🔍',
               title: 'การตรวจสอบ',
               desc: 'รอการตรวจสอบเอกสาร',
               active: false,
-              completed: false
+              completed: false,
+              editAction: 'showPage(\'approval\')'
             },
             {
               icon: '🎯',
               title: 'การพิจารณา',
               desc: 'รอการพิจารณา',
               active: false,
-              completed: false
+              completed: false,
+              editAction: 'showPage(\'approval\')'
             },
             {
               icon: '✅',
               title: 'การอนุมัติ',
               desc: 'รอผู้อนุมัติลงนาม',
               active: false,
-              completed: false
+              completed: false,
+              editAction: 'showPage(\'approval\')'
             }
           ];
           timeline.forEach(item => {
@@ -3014,11 +3030,19 @@ ${isApproved ? `<p><span class="font-medium">ผู้อนุมัติ:</sp
             let titleColor = item.completed ? 'text-green-800' : 'text-gray-800';
             let descColor = item.completed ? 'text-green-600' : 'text-gray-600';
 
+            let editBtnHtml = '';
+            if (item.completed || item.active) {
+                editBtnHtml = `<button onclick="${item.editAction}" class="text-xs text-blue-500 hover:text-blue-700 underline mt-1">✏️ แก้ไข</button>`;
+            }
+
             timelineItem.innerHTML = `
 <div class="timeline-dot"></div>
-<div>
-<p class="font-semibold ${titleColor}">${item.icon} ${item.title}</p>
-<p class="text-sm ${descColor}">${item.desc}</p>
+<div class="flex-1 flex justify-between items-start">
+  <div>
+    <p class="font-semibold ${titleColor}">${item.icon} ${item.title}</p>
+    <p class="text-sm ${descColor}">${item.desc}</p>
+    ${editBtnHtml}
+  </div>
 </div>
 `;
             timelineContainer.appendChild(timelineItem);
